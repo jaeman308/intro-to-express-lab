@@ -70,14 +70,16 @@ app.get('/shoes', (req,res) => {
 
     if (!isNaN(minPrice)) {
         filterShoes = filterShoes.filter(shoe => shoe.price >= minPrice);
-        res.send(``)
     } if (!isNaN(maxPrice)) {
-        filterShoes = filterShoes.filter(shoe => shoe.price >= maxPrice);
-
+        filterShoes = filterShoes.filter(shoe => shoe.price <= maxPrice);
     }if (type) {
         filterShoes = filterShoes.filter(shoe => shoe.type === type);
     }
-    
+
+    if (filterShoes.length === 0) {
+        res.send('No shoes found matching the criteria.');
+        return;
+    }
     const filterDetials = filterShoes.map( shoe => `${shoe.name}: ${shoe.price}`).join(', ')
 
     res.send(` Here are your shoes: ${filterDetials}`);
