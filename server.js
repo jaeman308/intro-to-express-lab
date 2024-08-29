@@ -54,10 +54,35 @@ app.get('/collectibles/:id', (req, res) => {
 })
 
 //4. 
+// Query Parameters:
+
+// min-price: Excludes shoes below this price.
+// max-price: Excludes shoes above this price.
+// type: Shows only shoes of the specified type.
+// No parameters: Responds with the full list of shoes.
 
 app.get('/shoes', (req,res) => {
+    const minPrice = parseFloat(req.query['min-price']);
+    const maxPrice = parseFloat(req.query['max-price']);
+    const type = req.query['type'];
 
-}); 
+    let filterShoes = shoes; 
+
+    if (!isNaN(minPrice)) {
+        filterShoes = filterShoes.filter(shoe => shoe.price >= minPrice);
+        res.send(``)
+    } if (!isNaN(maxPrice)) {
+        filterShoes = filterShoes.filter(shoe => shoe.price >= maxPrice);
+
+    }if (type) {
+        filterShoes = filterShoes.filter(shoe => shoe.type === type);
+    }
+    
+    const filterDetials = filterShoes.map( shoe => `${shoe.name}: ${shoe.price}`).join(', ')
+
+    res.send(` Here are your shoes: ${filterDetials}`);
+
+    }); 
 
 
 
